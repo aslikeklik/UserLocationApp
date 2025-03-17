@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">UserLocationApp</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="start_button">Start</string>
+    <string name="stop_button">Stop</string>
+    <string name="reset_button">Reset</string>
+    <string name="current_location">Current Location</string>
+    <string name="first_location">First Location</string>
+    <string name="location">Location</string>
+    <string name="address_not_found">Address not found</string>
+    <string name="address_failed">Failed to get address</string>
 </resources>

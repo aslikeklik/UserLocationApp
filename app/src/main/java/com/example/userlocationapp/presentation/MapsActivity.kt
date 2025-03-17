@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.Locale
+import com.example.userlocationapp.R
 
 @AndroidEntryPoint
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -54,7 +55,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (::mMap.isInitialized) {
                     mMap.clear()
                     route.points.forEach {
-                        mMap.addMarker(MarkerOptions().position(it).title("Konum"))
+                        mMap.addMarker(MarkerOptions().position(it).title(getString(R.string.location)))
                     }
                 }
             }
@@ -76,7 +77,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         checkAndRequestLocation()
 
         viewModel.route.value.points.forEach {
-            mMap.addMarker(MarkerOptions().position(it).title("Önceki Konum"))
+            mMap.addMarker(MarkerOptions().position(it).title(getString(R.string.first_location)))
         }
     }
 
@@ -87,10 +88,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else {
             mMap.isMyLocationEnabled = true
-            val locationRequest = LocationRequest.create().apply {
-                priority = Priority.PRIORITY_HIGH_ACCURACY
-                numUpdates = 1
-            }
+            val locationRequest = LocationRequest.Builder(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                5000L
+            ).apply {
+                setMinUpdateIntervalMillis(2000L)
+                setMaxUpdates(1)
+            }.build()
 
             fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
@@ -119,11 +123,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        val locationRequest = LocationRequest.create().apply {
-            interval = 5000
-            fastestInterval = 2000
-            priority = Priority.PRIORITY_HIGH_ACCURACY
-        }
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            5000L
+        ).apply {
+            setMinUpdateIntervalMillis(2000L)
+        }.build()
 
         try {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, mainLooper)
@@ -179,9 +184,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return try {
             val geocoder = Geocoder(this, Locale.getDefault())
             val address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            address?.firstOrNull()?.getAddressLine(0) ?: "Adres bulunamadı"
+            address?.firstOrNull()?.getAddressLine(0) ?: getString(R.string.address_not_found)
         } catch (e: Exception) {
-            "Adres alınamadı"
+            getString(R.string.address_failed)
         }
     }
 
