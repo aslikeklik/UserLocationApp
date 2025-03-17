@@ -1,7 +1,9 @@
 plugins {
+    alias(libs.plugins.hilt)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    kotlin("kapt")
 }
 
 android {
@@ -53,6 +55,8 @@ dependencies {
     implementation (libs.play.services.location)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.javapoet)
 
 }

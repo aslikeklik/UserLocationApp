@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.userlocationapp.domain.model.Route
 import com.example.userlocationapp.domain.usecase.TrackLocationUseCase
 import com.google.android.gms.maps.model.LatLng
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MapsViewModel(
+@HiltViewModel
+class MapsViewModel @Inject constructor(
     private val trackLocationUseCase: TrackLocationUseCase
 ) : ViewModel() {
 
@@ -41,5 +44,4 @@ class MapsViewModel(
             _route.value = Route()
         }
     }
-
 }

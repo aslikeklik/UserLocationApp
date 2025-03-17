@@ -17,16 +17,18 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.Locale
 
+@AndroidEntryPoint
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMapsBinding
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    private val viewModel: MapsViewModel by viewModels { MapsViewModelFactory(applicationContext) }
+    private val viewModel: MapsViewModel by viewModels()
     private var tracking = false
     private var lastLocation: LatLng? = null
 
@@ -94,7 +96,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onLocationResult(result: LocationResult) {
                     val location = result.lastLocation ?: return
                     val currentLatLng = LatLng(location.latitude, location.longitude)
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
                     binding.progressBar.visibility = View.GONE
                     binding.mapFragmentContainer.visibility = View.VISIBLE
                 }
@@ -110,7 +112,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val location = result.lastLocation ?: return
                 val currentLatLng = LatLng(location.latitude, location.longitude)
 
-                if (lastLocation == null || distanceBetween(lastLocation!!, currentLatLng) >= 10) {
+                if (lastLocation == null || distanceBetween(lastLocation!!, currentLatLng) >= 100) {
                     viewModel.addLocationPoint(currentLatLng)
                     lastLocation = currentLatLng
                 }
