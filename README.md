@@ -1,6 +1,6 @@
 A modern Android application to track and visualize user location in real-time using Google Maps.
 
-🚀 Features
+Features
 
 Real-time location tracking with FusedLocationProviderClient
 Foreground service support for background tracking
@@ -10,7 +10,7 @@ Address display on marker click via Geocoder
 Clean Architecture with ViewModel, UseCase, Repository layers
 Built with Kotlin, Hilt, Coroutines, and Jetpack libraries
 
-🛠 Tech Stack
+Tech Stack
 
 Kotlin
 Hilt (DI)
